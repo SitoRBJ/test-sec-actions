@@ -25,5 +25,6 @@ RUN chmod +x /usr/bin/cyclonedx-cli
 
 # Copies your code file from your action repository to the filesystem path `/` of the container
 COPY entrypoint.sh /entrypoint.sh
+COPY dependency_track.sh /dependency_track.sh
 # Code file to execute when the docker container starts up (`entrypoint.sh`)
 ENTRYPOINT ["/entrypoint.sh"]
