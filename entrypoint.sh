@@ -6,3 +6,6 @@ LANGUAGE=$3
 
 echo "Run dependency track action"
 ./dependency_track.sh DTRACK_URL DTRACK_KEY LANGUAGE
+
+echo "Run secrets leaks action"
+./secrets_leaks.sh
