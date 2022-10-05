@@ -1,5 +1,5 @@
 # Container image that runs your code
-FROM ubuntu:jammy
+FROM ubuntu:focal
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -9,14 +9,24 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # using --no-install-recommends to reduce image size
 
+# RUN apt-get update \
+#     && apt-get install --no-install-recommends -y git npm golang lsb-release \
+#     curl jq build-essential apt-transport-https unzip wget nodejs gnupg \
+#     libc6 libgcc1 libgssapi-krb5-2 libicu66 libssl1.1 libstdc++6 zlib1g \
+#     && curl -sS https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -o packages-microsoft-prod.deb \
+#     && dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb \
+#     && apt-get update \
+#     && apt-get install -y dotnet-sdk-5.0
+
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y git npm golang lsb-release \
-    curl jq build-essential apt-transport-https unzip wget nodejs gnupg \
-    libc6 libgcc1 libgssapi-krb5-2 libicu66 libssl1.1 libstdc++6 zlib1g \
-    && curl -sS https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -o packages-microsoft-prod.deb \
-    && dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb \
-    && apt-get update \
-    && apt-get install -y dotnet-sdk-5.0
+    && apt-get install --no-install-recommends -y git npm golang lsb-release default-jdk \
+    curl jq build-essential apt-transport-https unzip wget nodejs gnupg snapd \
+    libc6 libgcc1 libgssapi-krb5-2 libicu66 libssl1.1 libstdc++6 zlib1g 
+
+
+RUN curl -sS https://dot.net/v1/dotnet-install.sh -o dotnet-install.sh && \
+    chmod +x dotnet-install.sh && \
+    ./dotnet-install.sh -c 5.0
 
 # Installing Cyclone BoM generates for the different supported languages
 
@@ -52,6 +62,7 @@ RUN mkdir /downloads/sonarqube -p && \
     unzip sonar-scanner-cli-4.7.0.2747-linux.zip && \
     mv sonar-scanner-4.7.0.2747-linux /var/opt
 
+ENV PATH $PATH:/var/opt/sonar-scanner-4.7.0.2747-linux/bin/
 
 ##################################################################
 # Configuration checker requirements
@@ -61,17 +72,33 @@ RUN mkdir /downloads/sonarqube -p && \
 RUN curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
 
 # Trivy
-RUN wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add - && \
+RUN wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-key add - && \
     echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | tee -a /etc/apt/sources.list.d/trivy.list && \
     apt-get update && \
     apt-get install trivy
 
 
+##################################################################
+# Dependency track requirementes
+##################################################################
+
+RUN wget https://github.com/jeremylong/DependencyCheck/releases/download/v7.2.1/dependency-check-7.2.1-release.zip  && \
+    unzip dependency-check-7.2.1-release.zip && \
+    mv dependency-check /var/opt
+
+ENV PATH $PATH:/var/opt/dependency-check/bin/
+ENV JAVA_HOME="/lib/jvm/java-11-openjdk-amd64"
+
+
 # Copies your code file from your action repository to the filesystem path `/` of the container
+
 COPY entrypoint.sh /entrypoint.sh
 COPY dependency_track.sh /dependency_track.sh
 COPY secrets_leaks.sh /secrets_leaks.sh
 COPY sonar.sh /sonar.sh
 COPY config.sh /config.sh
+
+RUN chmod +x /*.sh
+
 # Code file to execute when the docker container starts up (`entrypoint.sh`)
 ENTRYPOINT ["/entrypoint.sh"]

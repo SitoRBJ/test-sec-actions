@@ -6,18 +6,55 @@ branding:
   color: 'green'
 
 inputs:
-  url:  
+  deptrack_enable:
+    description: 'Enables Dependency Track check'
+    required: true
+    default: 'true'
+  deptrack_url:  
     description: 'URL of OWASP Dependency Track REST API'
     required: true
     default: 'https://dtrack.quobis.com/'
-  key:
+  deptrack_key:
     description: 'Key to access OWASP Dependency Track REST API'
     required: true
     default: 'USEAVALIDKEY'
-  language:
+  deptrack_language:
     description: 'Programming language'
     required: true
     default: 'nodejs'
+  sonar_enable:
+    description: 'Enables SonarQube check'
+    required: true
+    default: 'true'
+  sonar_project:
+    description: 'SonarQube project'
+    required: true
+    default: ''
+  sonar_source:
+    description: 'SonarQube source'
+    required: true
+    default: ''
+  sonar_host:
+    description: 'SonarQube host'
+    required: true
+    default: ''
+  sonar_login:
+    description: 'SonarQube login key'
+    required: true
+    default: ''
+  sonar_exclusion:
+    description: 'SonarQube exclusion'
+    required: true
+    default: ''
+  config_enable:
+    description: 'Enables configuration check'
+    required: true
+    default: 'true'
+  secrets_enable:
+    description: 'Enables secrets check'
+    required: true
+    default: 'true'
+  
 
 outputs:
   riskscore:
@@ -27,6 +64,15 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.url }}
-    - ${{ inputs.key }}
-    - ${{ inputs.language }}
+    - ${{ inputs.deptrack_enable }}
+    - ${{ inputs.deptrack_url }}
+    - ${{ inputs.deptrack_key }}
+    - ${{ inputs.deptrack_language }}
+    - ${{ inputs.sonar_enable }}
+    - ${{ inputs.sonar_project }}
+    - ${{ inputs.sonar_source }}
+    - ${{ inputs.sonar_host }}
+    - ${{ inputs.sonar_login }}
+    - ${{ inputs.sonar_exclusion }}
+    - ${{ inputs.config_enable }}
+    - ${{ inputs.secrets_enable }}
