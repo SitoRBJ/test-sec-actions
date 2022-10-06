@@ -95,8 +95,9 @@ ENV JAVA_HOME="/lib/jvm/java-11-openjdk-amd64"
 COPY entrypoint.sh /entrypoint.sh
 COPY dependency_track.sh /dependency_track.sh
 COPY secrets_leaks.sh /secrets_leaks.sh
-COPY sonar.sh /sonar.sh
+COPY code.sh /code.sh
 COPY config.sh /config.sh
+COPY to-rdjson.jq /to-rdjson.jq
 
 RUN chmod +x /*.sh
 

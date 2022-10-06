@@ -54,11 +54,53 @@ inputs:
     description: 'Enables secrets check'
     required: true
     default: 'true'
-  
+  reviewdog_github_token:
+    description: 'GITHUB_TOKEN'
+    required: true
+    default: "${{ github.token }}"
+  reviewdog_working_directory:
+    description: |
+      Directory to run the action on, from the repo root.
+      Default is . ( root of the repository)
+    default: '.'
+    required: false
+  reviewdog_level:
+    description: 'Report level for reviewdog [info,warning,error]'
+    default: 'error'
+    required: false
+  reviewdog_reporter:
+    description: |
+      Reporter of reviewdog command [github-pr-check,github-pr-review].
+      Default is github-pr-check.
+    default: 'github-pr-check'
+    required: false
+  reviewdog_filter_mode:
+    description: |
+      Filtering for the reviewdog command [added,diff_context,file,nofilter].
+      Default is added.
+    default: 'added'
+    required: false
+  reviewdog_fail_on_error:
+    description: |
+      Exit code for reviewdog when errors are found [true,false]
+      Default is `false`.
+    default: 'false'
+    required: false
+  reviewdog_tfsec_version:
+    description: |
+      The version of tfsec to install.
+      Default is latest.
+    default: 'latest'
+    required: false
 
 outputs:
   riskscore:
     description: 'String with the number of vulnerabilities found'
+  tfsec-return-code:
+    description: 'tfsec command return code'
+  reviewdog-return-code:
+    description: 'reviewdog command return code'
+
 
 runs:
   using: 'docker'
@@ -76,3 +118,10 @@ runs:
     - ${{ inputs.sonar_exclusion }}
     - ${{ inputs.config_enable }}
     - ${{ inputs.secrets_enable }}
+    - ${{ reviewdog_github_token }}
+    - ${{ reviewdog_working_directory }}
+    - ${{ reviewdog_level }}
+    - ${{ reviewdog_reporter }}
+    - ${{ reviewdog_filter_mode }}
+    - ${{ reviewdog_fail_on_error }}
+    - ${{ reviewdog_tfsec_version }}
