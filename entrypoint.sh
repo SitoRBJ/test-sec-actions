@@ -5,7 +5,7 @@ DTRACK_URL=$2
 DTRACK_KEY=$3
 LANGUAGE=$4
 
-SONAR_ENABLE=$5
+CODE_ENABLE=$5
 SONAR_PROJECT=$6
 SONAR_SOURCES=$7
 SONAR_HOST=$8
@@ -23,6 +23,10 @@ REVIEWDOG_FILTER=$17
 REVIEWDOG_FAIL=$18
 REVIEWDOG_TFSEC_VERSION=$19
 
+DEPCHECK_PROJECT=$20
+DEPCHECK_PATH=$21
+DEPCHECK_FORMAT=$22
+
 
 echo "Starting security checks"
 
@@ -33,9 +37,10 @@ else
     echo "Skip Dependency Track action"
 fi
 
-if [[ ${SONAR_ENABLE} == "true" ]]; then
+if [[ ${CODE_ENABLE} == "true" ]]; then
     echo "Run code check action"
-    ./sonar.sh SONAR_PROJECT SONAR_SOURCES SONAR_HOST SONAR_LOGIN SONAR_EXCLUSION
+    ./code.sh SONAR_PROJECT SONAR_SOURCES SONAR_HOST SONAR_LOGIN SONAR_EXCLUSION DEPCHECK_PROJECT DEPCHECK_PATH DEPCHECK_FORMAT
+
 else
     echo "Skip code check action"
 fi
