@@ -94,6 +94,26 @@ inputs:
     description: 'Dependency check format'
     default: ''
     required: true
+  trivy_scan-type:
+    description: 'Scan type to use for scanning vulnerability'
+    required: false
+    default: 'image'
+  trivy_ignore-unfixed:
+    description: 'ignore unfixed vulnerabilities'
+    required: false
+    default: 'false'
+  trivy_severity:
+    description: 'severities of vulnerabilities to be displayed'
+    required: false
+    default: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
+  trivy_format:
+    description: 'output format (table, json, template)'
+    required: false
+    default: 'table'
+  trivy_output:
+    description: 'writes results to a file with the specified file name'
+    required: false
+    default: ''
 
 outputs:
   riskscore:
@@ -102,7 +122,6 @@ outputs:
     description: 'tfsec command return code'
   reviewdog-return-code:
     description: 'reviewdog command return code'
-
 
 runs:
   using: 'docker'
@@ -130,3 +149,8 @@ runs:
     - ${{ inputs.depcheck_project }}
     - ${{ inputs.depcheck_path }}
     - ${{ inputs.depcheck_format }}
+    - ${{ inputs.trivy_scan-type }}
+    - ${{ inputs.trivy_ignore-unfixed }}
+    - ${{ inputs.trivy_severity }}
+    - ${{ inputs.trivy_format }}
+    - ${{ inputs.trivy_output }}

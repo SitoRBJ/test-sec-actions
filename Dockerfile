@@ -33,8 +33,8 @@ RUN curl -sS https://dot.net/v1/dotnet-install.sh -o dotnet-install.sh && \
 #RUN mkdir /home/dtrack && cd /home/dtrack && git clone git@github.com:SCRATCh-ITEA3/dtrack-demonstrator.git
 RUN go get github.com/ozonru/cyclonedx-go/cmd/cyclonedx-go && cp /root/go/bin/cyclonedx-go /usr/bin/
 
-COPY cyclonedx-linux-x64 /usr/bin/cyclonedx-cli
-RUN chmod +x /usr/bin/cyclonedx-cli
+RUN curl -sS https://github.com/CycloneDX/cyclonedx-cli/releases/download/v0.24.1/cyclonedx-linux-x64 -o /usr/bin/cyclonedx-cli && \
+    chmod +x /usr/bin/cyclonedx-cli
 
 
 ##################################################################
@@ -89,7 +89,6 @@ RUN wget https://github.com/jeremylong/DependencyCheck/releases/download/v7.2.1/
 ENV PATH $PATH:/var/opt/dependency-check/bin/
 ENV JAVA_HOME="/lib/jvm/java-11-openjdk-amd64"
 
-
 # Copies your code file from your action repository to the filesystem path `/` of the container
 
 COPY entrypoint.sh /entrypoint.sh
@@ -97,6 +96,8 @@ COPY dependency_track.sh /dependency_track.sh
 COPY secrets_leaks.sh /secrets_leaks.sh
 COPY code.sh /code.sh
 COPY config.sh /config.sh
+COPY tsec_check.sh /tsec_check.sh
+COPY trivy_check.sh /trivy_check.sh
 COPY to-rdjson.jq /to-rdjson.jq
 
 RUN chmod +x /*.sh
