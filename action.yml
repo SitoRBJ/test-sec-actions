@@ -98,6 +98,10 @@ inputs:
     description: 'Scan type to use for scanning vulnerability'
     required: false
     default: 'image'
+  trivy_scan-ref:
+    description: 'Scan reference'
+    required: false
+    default: '.'
   trivy_ignore-unfixed:
     description: 'ignore unfixed vulnerabilities'
     required: false
@@ -141,6 +145,7 @@ runs:
     - ${{ inputs.depcheck_project }}
     - ${{ inputs.depcheck_path }}
     - ${{ inputs.depcheck_format }}
+    - ${{ inputs.trivy_scan-ref }}
     - ${{ inputs.trivy_scan-type }}
     - ${{ inputs.trivy_ignore-unfixed }}
     - ${{ inputs.trivy_severity }}

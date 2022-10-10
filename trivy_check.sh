@@ -1,8 +1,9 @@
 #!/bin/bash
 
 TRIVY_TRIVY_SCANTYPE=$1
-TRIVY_IGNORE=$2
-TRIVY_SEVERITY=$3
+TRIVY_SCANREF=$2
+TRIVY_IGNORE=$3
+TRIVY_SEVERITY=$4
 TRIVY_OUTPUT='trivy-results-config.sarif'
 ARGS=""
 
@@ -17,7 +18,7 @@ if [ $TRIVY_SEVERITY ];then
 fi
 
 echo "Building SARIF report"
-trivy --quiet ${TRIVY_SCANTYPE} --format sarif --output ${TRIVY_OUTPUT} ${ARGS}
+trivy --quiet ${TRIVY_SCANTYPE} --format sarif --output ${TRIVY_OUTPUT} ${ARGS} ${TRIVY_SCANREF}
 
 echo "Upload trivy config scan result to Github"
 
