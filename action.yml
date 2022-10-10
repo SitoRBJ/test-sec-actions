@@ -13,11 +13,11 @@ inputs:
   deptrack_url:  
     description: 'URL of OWASP Dependency Track REST API'
     required: true
-    default: 'https://dtrack.quobis.com/'
+    default: "${{ secrets.SECRET_OWASP_DT_URL }}"
   deptrack_key:
     description: 'Key to access OWASP Dependency Track REST API'
     required: true
-    default: 'USEAVALIDKEY'
+    default: "${{ secrets.SECRET_OWASP_DT_KEY }}"
   deptrack_language:
     description: 'Programming language'
     required: true
@@ -29,23 +29,23 @@ inputs:
   sonar_project:
     description: 'SonarQube project'
     required: true
-    default: ''
+    default: '<PROJECT>'
   sonar_source:
     description: 'SonarQube source'
     required: true
-    default: ''
+    default: '.'
   sonar_host:
     description: 'SonarQube host'
     required: true
-    default: ''
+    default: "${{ secrets.SONAR_HOST_URL }}"
   sonar_login:
     description: 'SonarQube login key'
     required: true
-    default: ''
+    default: "${{ secrets.SONAR_TOKEN }}"
   sonar_exclusion:
     description: 'SonarQube exclusion'
     required: true
-    default: ''
+    default: '<TARGET>'
   config_enable:
     description: 'Enables configuration check'
     required: true
@@ -61,46 +61,46 @@ inputs:
   reviewdog_working_directory:
     description: 'Directory to run the action on, from the repo root.. Default is . ( root of the repository)'
     default: '.'
-    required: false
+    required: true
   reviewdog_level:
     description: 'Report level for reviewdog [info,warning,error]'
     default: 'error'
-    required: false
+    required: true
   reviewdog_reporter:
     description: 'Reporter of reviewdog command [github-pr-check,github-pr-review].. Default is github-pr-check.'
     default: 'github-pr-check'
-    required: false
+    required: true
   reviewdog_fail_on_error:
     description: 'Exit code for reviewdog when errors are found [true,false]. Default is `false`.'
     default: 'false'
-    required: false
+    required: true
   depcheck_project:
     description: 'Dependency check project'
-    default: ''
+    default: '<PROJECT>'
     required: true
   depcheck_path:
     description: 'Dependency check path'
-    default: ''
+    default: '.'
     required: true  
   depcheck_format:
     description: 'Dependency check format'
-    default: ''
+    default: 'HTML'
     required: true
   trivy_scan-type:
     description: 'Scan type to use for scanning vulnerability'
-    required: false
+    required: true
     default: 'image'
   trivy_scan-ref:
     description: 'Scan reference'
-    required: false
+    required: true
     default: '.'
   trivy_ignore-unfixed:
     description: 'ignore unfixed vulnerabilities'
-    required: false
+    required: true
     default: 'false'
   trivy_severity:
     description: 'severities of vulnerabilities to be displayed'
-    required: false
+    required: true
     default: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
 
 outputs:
