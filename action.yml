@@ -1,6 +1,6 @@
 # action.yml
-name: 'OWASP Dependency Track check'
-description: 'Creates BoM and upload repository to OWASP Dependency Track to find vulnerabilities'
+name: 'Security checker'
+description: 'Checks and analyzes the security of the code added to the specified repository.'
 branding:
   icon: 'check-square'  
   color: 'green'
@@ -22,7 +22,7 @@ inputs:
     description: 'Programming language'
     required: true
     default: 'nodejs'
-  sonar_enable:
+  code_enable:
     description: 'Enables SonarQube check'
     required: true
     default: 'true'
@@ -70,17 +70,9 @@ inputs:
     description: 'Reporter of reviewdog command [github-pr-check,github-pr-review].. Default is github-pr-check.'
     default: 'github-pr-check'
     required: false
-  reviewdog_filter_mode:
-    description: 'Filtering for the reviewdog command [added,diff_context,file,nofilter].. Default is added.'
-    default: 'added'
-    required: false
   reviewdog_fail_on_error:
     description: 'Exit code for reviewdog when errors are found [true,false]. Default is `false`.'
     default: 'false'
-    required: false
-  reviewdog_tfsec_version:
-    description: 'The version of tfsec to install.. Default is latest.'
-    default: 'latest'
     required: false
   depcheck_project:
     description: 'Dependency check project'
@@ -127,7 +119,7 @@ runs:
     - ${{ inputs.deptrack_url }}
     - ${{ inputs.deptrack_key }}
     - ${{ inputs.deptrack_language }}
-    - ${{ inputs.sonar_enable }}
+    - ${{ inputs.code_enable }}
     - ${{ inputs.sonar_project }}
     - ${{ inputs.sonar_source }}
     - ${{ inputs.sonar_host }}
@@ -139,9 +131,7 @@ runs:
     - ${{ inputs.reviewdog_working_directory }}
     - ${{ inputs.reviewdog_level }}
     - ${{ inputs.reviewdog_reporter }}
-    - ${{ inputs.reviewdog_filter_mode }}
     - ${{ inputs.reviewdog_fail_on_error }}
-    - ${{ inputs.reviewdog_tfsec_version }}
     - ${{ inputs.depcheck_project }}
     - ${{ inputs.depcheck_path }}
     - ${{ inputs.depcheck_format }}

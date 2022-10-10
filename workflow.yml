@@ -1,0 +1,39 @@
+name: gitleaks
+on:
+  pull_request:
+  push:
+
+jobs:
+  security_check_job:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Security check 
+        uses: SitoRBJ/test-sec-actions@v1
+        with:
+          deptrack_enable: 'true'
+          deptrack_url: '${{ secrets.SECRET_OWASP_DT_URL }}'
+          deptrack_key: '${{ secrets.SECRET_OWASP_DT_KEY }}'
+          deptrack_language: '<LANGUAGE>'
+          code_enable: 'true'
+          sonar_project: '<PROJECT>'
+          sonar_source: '.'
+          sonar_host: ${{ secrets.SONAR_HOST_URL }}
+          sonar_login: ${{ secrets.SONAR_TOKEN }}
+          sonar_exclusion: '<TARGET>'
+          config_enable: 'true'
+          secrets_enable: 'true'
+          reviewdog_github_token: ${{ secrets.github_token }}
+          reviewdog_working_directory: 'terraform'
+          reviewdog_level: 'info'
+          reviewdog_reporter: 'github-pr-review'
+          reviewdog_fail_on_error: 'true'
+          depcheck_project: '<PROJECT>'
+          depcheck_path: '.'
+          depcheck_format: 'HTML'
+          trivy_scan-type: 'config'
+          trivy_ignore-unfixed: 'true'
+          trivy_severity: 'CRITICAL,HIGH'

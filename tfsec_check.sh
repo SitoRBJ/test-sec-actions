@@ -4,9 +4,7 @@ REVIEWDOG_GIT_TOKEN=$1
 REVIEWDOG_DIR=$2
 REVIEWDOG_LVL=$3
 REVIEWDOG_REPORTER=$4
-REVIEWDOG_FILTER=$5
-REVIEWDOG_FAIL=$6
-REVIEWDOG_TFSEC_VERSION=$7
+REVIEWDOG_FAIL=$5
 
 # Print commands for debugging
 if [[ "$RUNNER_DEBUG" = "1" ]]; then
@@ -28,7 +26,7 @@ export REVIEWDOG_GITHUB_API_TOKEN="${REVIEWDOG_GIT_TOKEN}"
 set +Eeuo pipefail
 
 # shellcheck disable=SC2086
-tfsec --format=json ${INPUT_TFSEC_FLAGS:-} . | jq -r -f to-rdjson.jq | reviewdog -f=rdjson -name="tfsec" -reporter="${REVIEWDOG_REPORTER}" -level="${REVIEWDOG_LVL}" -fail-on-error="${REVIEWDOG_FAIL}" -filter-mode="${REVIEWDOG_FILTER}"
+tfsec --format=json ${INPUT_TFSEC_FLAGS:-} . | jq -r -f to-rdjson.jq | reviewdog -f=rdjson -name="tfsec" -reporter="${REVIEWDOG_REPORTER}" -level="${REVIEWDOG_LVL}" -fail-on-error="${REVIEWDOG_FAIL}"
 
 tfsec_return="${PIPESTATUS[0]}" reviewdog_return="${PIPESTATUS[2]}" exit_code=$?
 
