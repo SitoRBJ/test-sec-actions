@@ -106,14 +106,6 @@ inputs:
     description: 'severities of vulnerabilities to be displayed'
     required: false
     default: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
-  trivy_format:
-    description: 'output format (table, json, template)'
-    required: false
-    default: 'table'
-  trivy_output:
-    description: 'writes results to a file with the specified file name'
-    required: false
-    default: ''
 
 outputs:
   riskscore:
@@ -152,5 +144,3 @@ runs:
     - ${{ inputs.trivy_scan-type }}
     - ${{ inputs.trivy_ignore-unfixed }}
     - ${{ inputs.trivy_severity }}
-    - ${{ inputs.trivy_format }}
-    - ${{ inputs.trivy_output }}
