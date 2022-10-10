@@ -72,10 +72,12 @@ ENV PATH $PATH:/var/opt/sonar-scanner-4.7.0.2747-linux/bin/
 RUN curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
 
 # Trivy
-RUN wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-key add - && \
-    echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | tee -a /etc/apt/sources.list.d/trivy.list && \
+RUN wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | tee /usr/share/keyrings/trivy.gpg > /dev/null && \
+    echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | tee -a /etc/apt/sources.list.d/trivy.list && \
     apt-get update && \
-    apt-get install trivy
+    apt-get install trivy -y
+    
+    
 
 
 ##################################################################
@@ -96,7 +98,7 @@ COPY dependency_track.sh /dependency_track.sh
 COPY secrets_leaks.sh /secrets_leaks.sh
 COPY code.sh /code.sh
 COPY config.sh /config.sh
-COPY tsec_check.sh /tsec_check.sh
+COPY tfsec_check.sh /tfsec_check.sh
 COPY trivy_check.sh /trivy_check.sh
 COPY to-rdjson.jq /to-rdjson.jq
 
