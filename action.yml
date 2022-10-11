@@ -11,15 +11,15 @@ inputs:
     required: true
     default: 'true'
   deptrack_url:  
-    description: 'URL of OWASP Dependency Track REST API'
+    description: 'URL of OWASP Dependency Track REST API. Required if Dependency Track is enabled.'
     required: false
     default: "${{ secrets.SECRET_OWASP_DT_URL }}"
   deptrack_key:
-    description: 'Key to access OWASP Dependency Track REST API'
+    description: 'Key to access OWASP Dependency Track REST API. Required if Dependency Track is enabled.'
     required: false
     default: "${{ secrets.SECRET_OWASP_DT_KEY }}"
   deptrack_language:
-    description: 'Programming language'
+    description: 'Programming language. Required if Dependency Track is enabled.'
     required: false
     default: 'nodejs'
   code_enable:
@@ -27,19 +27,19 @@ inputs:
     required: true
     default: 'true'
   sonar_source:
-    description: 'SonarQube source'
+    description: 'SonarQube source. Required to run SonarQube.'
     required: false
     default: '.'
   sonar_host:
-    description: 'SonarQube host'
+    description: 'SonarQube host. Required to run SonarQube.'
     required: false
     default: "${{ secrets.SONAR_HOST_URL }}"
   sonar_login:
-    description: 'SonarQube login key'
+    description: 'SonarQube login key. Required to run SonarQube.'
     required: false
     default: "${{ secrets.SONAR_TOKEN }}"
   config_enable:
-    description: 'Enables configuration check'
+    description: 'Enables configuration check.'
     required: true
     default: 'true'
   secrets_enable:
@@ -47,51 +47,51 @@ inputs:
     required: true
     default: 'true'
   reviewdog_github_token:
-    description: 'GITHUB_TOKEN'
+    description: 'GitHub token. Required if config checker is enabled.'
     required: false
     default: "${{ github.token }}"
   reviewdog_working_directory:
-    description: 'Directory to run the action on, from the repo root.. Default is . ( root of the repository)'
+    description: 'Directory to run the action on, from the repo root.. Default is . ( root of the repository). Required if config checker is enabled.'
     default: '.'
     required: false
   reviewdog_level:
-    description: 'Report level for reviewdog [info,warning,error]'
+    description: 'Report level for reviewdog [info,warning,error]. Required if config checker is enabled.'
     default: 'error'
     required: false
   reviewdog_reporter:
-    description: 'Reporter of reviewdog command [github-pr-check,github-pr-review].. Default is github-pr-check.'
+    description: 'Reporter of reviewdog command [github-pr-check,github-pr-review]. Default is github-pr-check.. Required if config checker is enabled.'
     default: 'github-pr-check'
     required: false
   reviewdog_fail_on_error:
-    description: 'Exit code for reviewdog when errors are found [true,false]. Default is `false`.'
+    description: 'Exit code for reviewdog when errors are found [true,false]. Default is `false`. Required if config checker is enabled.'
     default: 'false'
     required: false
   depcheck_project:
-    description: 'Dependency check project'
+    description: 'Dependency check project. Required if code checker is enabled.'
     default: '<PROJECT>'
     required: false
   depcheck_path:
-    description: 'Dependency check path'
+    description: 'Dependency check path.  Required if code checker is enabled.'
     default: '.'
     required: false  
   depcheck_format:
-    description: 'Dependency check format'
+    description: 'Dependency check format.  Required if code checker is enabled.'
     default: 'HTML'
     required: false
   trivy_scan-type:
-    description: 'Scan type to use for scanning vulnerability'
+    description: 'Scan type to use for scanning vulnerability. Required if config checker is enabled.'
     required: false
     default: 'image'
   trivy_scan-ref:
-    description: 'Scan reference'
+    description: 'Scan reference. Required if config checker is enabled.'
     required: false
     default: '.'
   trivy_ignore-unfixed:
-    description: 'ignore unfixed vulnerabilities'
+    description: 'Ignore unfixed vulnerabilities. Required if config checker is enabled.'
     required: false
     default: 'false'
   trivy_severity:
-    description: 'severities of vulnerabilities to be displayed'
+    description: 'Severities of vulnerabilities to be displayed. Required if config checker is enabled.'
     required: false
     default: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
 
