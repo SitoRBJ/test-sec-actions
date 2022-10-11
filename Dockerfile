@@ -19,16 +19,9 @@ ENV DEBIAN_FRONTEND noninteractive
 #     && apt-get install -y dotnet-sdk-5.0
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y git npm golang lsb-release default-jdk \
+    && apt-get install --no-install-recommends -y git npm golang lsb-release default-jdk=2:1.11-72 \
     curl jq build-essential apt-transport-https unzip wget nodejs gnupg snapd \
     libc6 libgcc1 libgssapi-krb5-2 libicu66 libssl1.1 libstdc++6 zlib1g 
-
-
-RUN curl -sS https://dot.net/v1/dotnet-install.sh -o dotnet-install.sh && \
-    chmod +x dotnet-install.sh && \
-    ./dotnet-install.sh -c 5.0
-
-# Installing Cyclone BoM generates for the different supported languages
 
 #RUN mkdir /home/dtrack && cd /home/dtrack && git clone git@github.com:SCRATCh-ITEA3/dtrack-demonstrator.git
 RUN go get github.com/ozonru/cyclonedx-go/cmd/cyclonedx-go && cp /root/go/bin/cyclonedx-go /usr/bin/

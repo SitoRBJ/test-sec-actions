@@ -2,7 +2,7 @@
 
 DTRACK_URL=$1
 DTRACK_KEY=$2
-LANGUAGE=$3
+DTRACK_LANGUAGE=$3
 
 INSECURE="--insecure"
 #VERBOSE="--verbose"
@@ -11,7 +11,7 @@ INSECURE="--insecure"
 # $GITHUB_ variables are directly accessible in the script
 cd $GITHUB_WORKSPACE
 
-case $LANGUAGE in
+case $DTRACK_LANGUAGE in
     "nodejs")
         lscommand=$(ls)
         echo "[*] Processing NodeJS BoM"
@@ -51,18 +51,6 @@ case $LANGUAGE in
         BoMResult=$(cyclonedx-go -o bom.xml)
         ;;
 
-    "ruby")
-        echo "[*]  Processing Ruby BoM"
-        if [ ! $? = 0 ]; then
-            echo "[-] Error executing Ruby build. Stopping the action!"
-            exit 1
-        fi
-        apt-get install --no-install-recommends -y build-essential ruby-dev
-        gem install cyclonedx-ruby
-        path="bom.xml"
-        BoMResult=$(cyclonedx-ruby -p ./ -o bom.xml)
-        ;;
-
     "java")
         echo "[*]  Processing Java BoM"
         if [ ! $? = 0 ]; then
@@ -74,36 +62,8 @@ case $LANGUAGE in
         BoMResult=$(mvn compile)
         ;;
         
-    "dotnet")
-        echo "[*]  Processing Golang BoM"
-        if [ ! $? = 0 ]; then
-            echo "[-] Error executing NuGet (Dotnet) build. Stopping the action!"
-            exit 1
-        fi
-        path="bom.xml/bom.xml"
-        dotnet tool install --global CycloneDX
-        apt-get update
-        # The path to a .sln, .csproj, .vbproj, or packages.config file or the path to 
-        # a directory which will be recursively analyzed for packages.config files
-        BoMResult=$(dotnet CycloneDX . -o bom.xml)
-        ;;
-        
-    "php")
-        echo "[*]  Processing Php Composer BoM"
-        if [ ! $? = 0 ]; then
-            echo "[-] Error executing Php build. Stopping the action!"
-            exit 1
-        fi
-        apt-get install --no-install-recommends -y build-essential php php-xml php-mbstring
-        curl -sS "https://getcomposer.org/installer" -o composer-setup.php
-        php composer-setup.php --install-dir=/usr/bin --version=2.0.14 --filename=composer
-        composer require --dev cyclonedx/cyclonedx-php-composer
-        path="bom.xml"
-        BoMResult=$(composer make-bom --spec-version="1.2")
-        ;;
-
     *)
-        "[-] Project type not supported: $LANGUAGE"
+        "[-] Project type not supported: $DTRACK_LANGUAGE"
         exit 1
         ;;
 esac    

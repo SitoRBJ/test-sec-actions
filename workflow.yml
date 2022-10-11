@@ -16,7 +16,6 @@ jobs:
         with:
           deptrack_url: ${{ secrets.SECRET_OWASP_DT_URL }}
           deptrack_key: ${{ secrets.SECRET_OWASP_DT_KEY }}
-          sonar_project: '<PROJECT>'
           sonar_host: ${{ secrets.SONAR_HOST_URL }}
           sonar_login: ${{ secrets.SONAR_TOKEN }}
           reviewdog_github_token: ${{ secrets.github_token }}

@@ -12,40 +12,32 @@ inputs:
     default: 'true'
   deptrack_url:  
     description: 'URL of OWASP Dependency Track REST API'
-    required: true
+    required: false
     default: "${{ secrets.SECRET_OWASP_DT_URL }}"
   deptrack_key:
     description: 'Key to access OWASP Dependency Track REST API'
-    required: true
+    required: false
     default: "${{ secrets.SECRET_OWASP_DT_KEY }}"
   deptrack_language:
     description: 'Programming language'
-    required: true
+    required: false
     default: 'nodejs'
   code_enable:
     description: 'Enables SonarQube check'
     required: true
     default: 'true'
-  sonar_project:
-    description: 'SonarQube project'
-    required: true
-    default: '<PROJECT>'
   sonar_source:
     description: 'SonarQube source'
-    required: true
+    required: false
     default: '.'
   sonar_host:
     description: 'SonarQube host'
-    required: true
+    required: false
     default: "${{ secrets.SONAR_HOST_URL }}"
   sonar_login:
     description: 'SonarQube login key'
-    required: true
+    required: false
     default: "${{ secrets.SONAR_TOKEN }}"
-  sonar_exclusion:
-    description: 'SonarQube exclusion'
-    required: true
-    default: '<TARGET>'
   config_enable:
     description: 'Enables configuration check'
     required: true
@@ -56,51 +48,51 @@ inputs:
     default: 'true'
   reviewdog_github_token:
     description: 'GITHUB_TOKEN'
-    required: true
+    required: false
     default: "${{ github.token }}"
   reviewdog_working_directory:
     description: 'Directory to run the action on, from the repo root.. Default is . ( root of the repository)'
     default: '.'
-    required: true
+    required: false
   reviewdog_level:
     description: 'Report level for reviewdog [info,warning,error]'
     default: 'error'
-    required: true
+    required: false
   reviewdog_reporter:
     description: 'Reporter of reviewdog command [github-pr-check,github-pr-review].. Default is github-pr-check.'
     default: 'github-pr-check'
-    required: true
+    required: false
   reviewdog_fail_on_error:
     description: 'Exit code for reviewdog when errors are found [true,false]. Default is `false`.'
     default: 'false'
-    required: true
+    required: false
   depcheck_project:
     description: 'Dependency check project'
     default: '<PROJECT>'
-    required: true
+    required: false
   depcheck_path:
     description: 'Dependency check path'
     default: '.'
-    required: true  
+    required: false  
   depcheck_format:
     description: 'Dependency check format'
     default: 'HTML'
-    required: true
+    required: false
   trivy_scan-type:
     description: 'Scan type to use for scanning vulnerability'
-    required: true
+    required: false
     default: 'image'
   trivy_scan-ref:
     description: 'Scan reference'
-    required: true
+    required: false
     default: '.'
   trivy_ignore-unfixed:
     description: 'ignore unfixed vulnerabilities'
-    required: true
+    required: false
     default: 'false'
   trivy_severity:
     description: 'severities of vulnerabilities to be displayed'
-    required: true
+    required: false
     default: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
 
 outputs:
@@ -115,27 +107,25 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.deptrack_enable }}
-    - ${{ inputs.deptrack_url }}
-    - ${{ inputs.deptrack_key }}
-    - ${{ inputs.deptrack_language }}
-    - ${{ inputs.code_enable }}
-    - ${{ inputs.sonar_project }}
-    - ${{ inputs.sonar_source }}
-    - ${{ inputs.sonar_host }}
-    - ${{ inputs.sonar_login }}
-    - ${{ inputs.sonar_exclusion }}
-    - ${{ inputs.config_enable }}
-    - ${{ inputs.secrets_enable }}
-    - ${{ inputs.reviewdog_github_token }}
-    - ${{ inputs.reviewdog_working_directory }}
-    - ${{ inputs.reviewdog_level }}
-    - ${{ inputs.reviewdog_reporter }}
-    - ${{ inputs.reviewdog_fail_on_error }}
-    - ${{ inputs.depcheck_project }}
-    - ${{ inputs.depcheck_path }}
-    - ${{ inputs.depcheck_format }}
-    - ${{ inputs.trivy_scan-ref }}
-    - ${{ inputs.trivy_scan-type }}
-    - ${{ inputs.trivy_ignore-unfixed }}
-    - ${{ inputs.trivy_severity }}
+    - ' -a ${{ inputs.deptrack_enable }}'
+    - ' -b ${{ inputs.deptrack_url }}'
+    - ' -c ${{ inputs.deptrack_key }}'
+    - ' -d ${{ inputs.deptrack_language }}'
+    - ' -e ${{ inputs.code_enable }}'
+    - ' -f ${{ inputs.sonar_source }}'
+    - ' -g ${{ inputs.sonar_host }}'
+    - ' -h ${{ inputs.sonar_login }}'
+    - ' -i ${{ inputs.config_enable }}'
+    - ' -j ${{ inputs.secrets_enable }}'
+    - ' -k ${{ inputs.reviewdog_github_token }}'
+    - ' -l ${{ inputs.reviewdog_working_directory }}'
+    - ' -m ${{ inputs.reviewdog_level }}'
+    - ' -n ${{ inputs.reviewdog_reporter }}'
+    - ' -o ${{ inputs.reviewdog_fail_on_error }}'
+    - ' -p ${{ inputs.depcheck_project }}'
+    - ' -q ${{ inputs.depcheck_path }}'
+    - ' -r ${{ inputs.depcheck_format }}'
+    - ' -s ${{ inputs.trivy_scan-type }}'
+    - ' -t ${{ inputs.trivy_scan-ref }}'
+    - ' -u ${{ inputs.trivy_ignore-unfixed }}'
+    - ' -v ${{ inputs.trivy_severity }}'
