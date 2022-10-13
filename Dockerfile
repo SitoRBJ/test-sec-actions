@@ -42,7 +42,8 @@ RUN curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/insta
 
 # Gitleaks
 RUN curl -L https://github.com/zricethezav/gitleaks/releases/download/v8.12.0/gitleaks_8.12.0_linux_x64.tar.gz -L -O \
-    && tar -zxvf gitleaks_8.12.0_linux_x64.tar.gz
+    && tar -zxvf gitleaks_8.12.0_linux_x64.tar.gz && \
+    rm gitleaks_8.12.0_linux_x64.tar.gz
 
 
 ##################################################################
@@ -53,7 +54,9 @@ RUN mkdir /downloads/sonarqube -p && \
     cd /downloads/sonarqube && \
     wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip && \
     unzip sonar-scanner-cli-4.7.0.2747-linux.zip && \
-    mv sonar-scanner-4.7.0.2747-linux /var/opt
+    mv sonar-scanner-4.7.0.2747-linux /var/opt && \
+    rm sonar-scanner-cli-4.7.0.2747-linux.zip
+
 
 ENV PATH $PATH:/var/opt/sonar-scanner-4.7.0.2747-linux/bin/
 
@@ -74,15 +77,18 @@ RUN wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --
 
 
 ##################################################################
-# Dependency track requirementes
+# Dependency check requirementes
 ##################################################################
 
 RUN wget https://github.com/jeremylong/DependencyCheck/releases/download/v7.2.1/dependency-check-7.2.1-release.zip  && \
     unzip dependency-check-7.2.1-release.zip && \
-    mv dependency-check /var/opt
+    mv dependency-check /var/opt && \
+    rm dependency-check-7.2.1-release.zip 
 
 ENV PATH $PATH:/var/opt/dependency-check/bin/
 ENV JAVA_HOME="/lib/jvm/java-11-openjdk-amd64"
+
+RUN /var/opt/dependency-check/bin/dependency-check.sh --updateonly
 
 # Copies your code file from your action repository to the filesystem path `/` of the container
 
@@ -92,7 +98,8 @@ COPY secrets_leaks.sh /secrets_leaks.sh
 COPY code.sh /code.sh
 COPY config.sh /config.sh
 COPY tfsec_check.sh /tfsec_check.sh
-COPY trivy_check.sh /trivy_check.sh
+COPY trivy_config.sh /trivy_config.sh
+COPY trivy_repo.sh /trivy_repo.sh
 COPY to-rdjson.jq /to-rdjson.jq
 
 RUN chmod +x /*.sh

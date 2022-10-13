@@ -78,22 +78,34 @@ inputs:
     description: 'Dependency check format.  Required if code checker is enabled.'
     default: 'HTML'
     required: false
-  trivy_scan-type:
-    description: 'Scan type to use for scanning vulnerability. Required if config checker is enabled.'
-    required: false
-    default: 'image'
-  trivy_scan-ref:
-    description: 'Scan reference. Required if config checker is enabled.'
+  trivy_config_scan-ref:
+    description: 'Config scan reference. Required if config checker is enabled.'
     required: false
     default: '.'
-  trivy_ignore-unfixed:
+  trivy_config_ignore-unfixed:
     description: 'Ignore unfixed vulnerabilities. Required if config checker is enabled.'
     required: false
     default: 'false'
-  trivy_severity:
+  trivy_config_severity:
     description: 'Severities of vulnerabilities to be displayed. Required if config checker is enabled.'
     required: false
     default: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
+  trivy_repo_scan-ref:
+    description: 'FS scan reference. Required if config checker is enabled.'
+    required: false
+    default: '.'
+  trivy_repo_ignore-unfixed:
+    description: 'Ignore unfixed vulnerabilities. Required if config checker is enabled.'
+    required: false
+    default: 'false'
+  trivy_repo_severity:
+    description: 'Severities of vulnerabilities to be displayed. Required if config checker is enabled.'
+    required: false
+    default: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
+  trivy_repo_vuln:
+    description: 'comma-separated list of vulnerability types (os,library). Required if config checker is enabled.'
+    required: false
+    default: 'os,library'
 
 outputs:
   riskscore:
@@ -125,7 +137,10 @@ runs:
     - ' -p ${{ inputs.depcheck_project }}'
     - ' -q ${{ inputs.depcheck_path }}'
     - ' -r ${{ inputs.depcheck_format }}'
-    - ' -s ${{ inputs.trivy_scan-type }}'
-    - ' -t ${{ inputs.trivy_scan-ref }}'
-    - ' -u ${{ inputs.trivy_ignore-unfixed }}'
-    - ' -v ${{ inputs.trivy_severity }}'
+    - ' -s ${{ inputs.trivy_config_scan-ref }}'
+    - ' -t ${{ inputs.trivy_config_ignore-unfixed }}'
+    - ' -u ${{ inputs.trivy_config_severity }}'
+    - ' -v ${{ inputs.trivy_repo_scan-ref }}'
+    - ' -w ${{ inputs.trivy_repo_ignore-unfixed }}'
+    - ' -x ${{ inputs.trivy_repo_severity }}'
+    - ' -y ${{ inputs.trivy_repo_vuln }}'

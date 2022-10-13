@@ -59,16 +59,25 @@ while getopts "a:b:c:d:e:f:g:h:i:j:k:l:m:n:o:p:q:r:s:t:u:v:" o; do
          export DEPCHECK_FORMAT=${OPTARG}
        ;;
        s)
-         export TRIVY_SCANTYPE=${OPTARG}
+         export TRIVY_CONFIG_SCANREF=${OPTARG}
        ;;
        t)
-         export TRIVY_SCANREF=${OPTARG}
+         export TRIVY_CONFIG_IGNORE=${OPTARG}
        ;;
        u)
-         export TRIVY_IGNORE=${OPTARG}
+         export TRIVY_CONFIG_SEVERITY=${OPTARG}
        ;;
        v)
-         export TRIVY_SEVERITY=${OPTARG}
+         export TRIVY_REPO_SCANREF=${OPTARG}
+       ;;
+       w)
+         export TRIVY_REPO_IGNORE=${OPTARG}
+       ;;
+       x)
+         export TRIVY_REPO_SEVERITY=${OPTARG}
+       ;;
+       y)
+         export TRIVY_REPO_VULN=${OPTARG}
        ;;
   esac
 done
@@ -147,22 +156,34 @@ if [[ ${CONFIG_ENABLE} == "true" ]]; then
         REVIEWDOG_ARGS="$REVIEWDOG_ARGS $REVIEWDOG_FAIL"
     fi
 
-    TRIVY_ARGS=""
+    TRIVY_CONFIG_ARGS=""
 
-    if [ $TRIVY_SCANTYPE ];then
-        TRIVY_ARGS="$TRIVY_ARGS $TRIVY_SCANTYPE"
+    if [ $TRIVY_CONFIG_SCANREF ];then
+        TRIVY_CONFIG_ARGS="$TRIVY_CONFIG_ARGS $TRIVY_CONFIG_SCANREF"
     fi
-    if [ $TRIVY_SCANREF ];then
-        TRIVY_ARGS="$TRIVY_ARGS $TRIVY_SCANREF"
+    if [ $TRIVY_CONFIG_IGNORE ];then
+        TRIVY_CONFIG_ARGS="$TRIVY_CONFIG_ARGS $TRIVY_CONFIG_IGNORE"
     fi
-    if [ $TRIVY_IGNORE ];then
-        TRIVY_ARGS="$TRIVY_ARGS $TRIVY_IGNORE"
-    fi
-    if [ $TRIVY_SEVERITY ];then
-        TRIVY_ARGS="$TRIVY_ARGS $TRIVY_SEVERITY"
+    if [ $TRIVY_CONFIG_SEVERITY ];then
+        TRIVY_CONFIG_ARGS="$TRIVY_CONFIG_ARGS $TRIVY_CONFIG_SEVERITY"
     fi
 
-    ./config.sh $REVIEWDOG_ARGS $TRIVY_ARGS
+    TRIVY_REPO_ARGS=""
+
+    if [ $TRIVY_REPO_SCANREF ];then
+        TRIVY_REPO_ARGS="$TRIVY_REPO_ARGS $TRIVY_REPO_SCANREF"
+    fi
+    if [ $TRIVY_REPO_IGNORE ];then
+        TRIVY_REPO_ARGS="$TRIVY_REPO_ARGS $TRIVY_REPO_IGNORE"
+    fi
+    if [ $TRIVY_REPO_SEVERITY ];then
+        TRIVY_REPO_ARGS="$TRIVY_REPO_ARGS $TRIVY_REPO_SEVERITY"
+    fi
+    if [ $TRIVY_REPO_VULN ];then
+        TRIVY_REPO_ARGS="$TRIVY_REPO_ARGS $TRIVY_REPO_VULN"
+    fi
+
+    ./config.sh $REVIEWDOG_ARGS $TRIVY_CONFIG_ARGS
 else
     echo "Slip configuration check action"
 fi
