@@ -10,7 +10,7 @@ ARGS=""
 set -e
 
 if [[ ${TRIVY_IGNORE} == "true" ]]; then
-  ARGS="$ARGS --ignore-unfixed"
+  ARGS="$ARGS --ignore-unfixed $TRIVY_IGNORE"
 fi
 
 if [ $TRIVY_SEVERITY ];then

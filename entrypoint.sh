@@ -62,21 +62,18 @@ while getopts "a:b:c:d:e:f:g:h:i:j:k:l:m:n:o:p:q:r:s:t:u:v:" o; do
          export TRIVY_CONFIG_SCANREF=${OPTARG}
        ;;
        t)
-         export TRIVY_CONFIG_IGNORE=${OPTARG}
-       ;;
-       u)
          export TRIVY_CONFIG_SEVERITY=${OPTARG}
        ;;
-       v)
+       u)
          export TRIVY_REPO_SCANREF=${OPTARG}
        ;;
-       w)
+       v)
          export TRIVY_REPO_IGNORE=${OPTARG}
        ;;
-       x)
+       w)
          export TRIVY_REPO_SEVERITY=${OPTARG}
        ;;
-       y)
+       x)
          export TRIVY_REPO_VULN=${OPTARG}
        ;;
   esac
@@ -160,9 +157,6 @@ if [[ ${CONFIG_ENABLE} == "true" ]]; then
 
     if [ $TRIVY_CONFIG_SCANREF ];then
         TRIVY_CONFIG_ARGS="$TRIVY_CONFIG_ARGS $TRIVY_CONFIG_SCANREF"
-    fi
-    if [ $TRIVY_CONFIG_IGNORE ];then
-        TRIVY_CONFIG_ARGS="$TRIVY_CONFIG_ARGS $TRIVY_CONFIG_IGNORE"
     fi
     if [ $TRIVY_CONFIG_SEVERITY ];then
         TRIVY_CONFIG_ARGS="$TRIVY_CONFIG_ARGS $TRIVY_CONFIG_SEVERITY"

@@ -82,10 +82,6 @@ inputs:
     description: 'Config scan reference. Required if config checker is enabled.'
     required: false
     default: '.'
-  trivy_config_ignore-unfixed:
-    description: 'Ignore unfixed vulnerabilities. Required if config checker is enabled.'
-    required: false
-    default: 'false'
   trivy_config_severity:
     description: 'Severities of vulnerabilities to be displayed. Required if config checker is enabled.'
     required: false
@@ -138,9 +134,8 @@ runs:
     - ' -q ${{ inputs.depcheck_path }}'
     - ' -r ${{ inputs.depcheck_format }}'
     - ' -s ${{ inputs.trivy_config_scan-ref }}'
-    - ' -t ${{ inputs.trivy_config_ignore-unfixed }}'
-    - ' -u ${{ inputs.trivy_config_severity }}'
-    - ' -v ${{ inputs.trivy_repo_scan-ref }}'
-    - ' -w ${{ inputs.trivy_repo_ignore-unfixed }}'
-    - ' -x ${{ inputs.trivy_repo_severity }}'
-    - ' -y ${{ inputs.trivy_repo_vuln }}'
+    - ' -t ${{ inputs.trivy_config_severity }}'
+    - ' -u ${{ inputs.trivy_repo_scan-ref }}'
+    - ' -v ${{ inputs.trivy_repo_ignore-unfixed }}'
+    - ' -w ${{ inputs.trivy_repo_severity }}'
+    - ' -x ${{ inputs.trivy_repo_vuln }}'
