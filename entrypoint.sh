@@ -259,7 +259,7 @@ if [[ ${CONFIG_ENABLE} == "true" ]]; then
     ./config.sh $REVIEWDOG_ARGS $TRIVY_CONFIG_ARGS $TRIVY_COMMON_ARGS
 
 else
-    echo "Slip configuration check action"
+    echo "Skip configuration check action"
 fi
 
 if [[ ${SECRETS_ENABLE} == "true" ]]; then
