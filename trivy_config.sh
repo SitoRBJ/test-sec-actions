@@ -2,8 +2,11 @@
 
 TRIVY_SCANREF=$1
 TRIVY_SEVERITY=$2
+TRIVY_TIMEOUT=$3
 TRIVY_OUTPUT='trivy-results-config.sarif'
 ARGS=""
+TIMEOUT=""
+
 
 set -e
 
@@ -11,8 +14,12 @@ if [ $TRIVY_SEVERITY ];then
   ARGS="$ARGS --severity $TRIVY_SEVERITY"
 fi
 
+if [ $TRIVY_TIMEOUT ];then
+  TIMEOUT="$TIMEOUT --timeout $TRIVY_TIMEOUT"
+fi
+
 echo "Building SARIF config report"
-trivy --quiet config --format sarif --output ${TRIVY_OUTPUT} ${ARGS} ${TRIVY_SCANREF}
+trivy --quiet ${TIMEOUT} config --format sarif --output ${TRIVY_OUTPUT} ${ARGS} ${TRIVY_SCANREF}
 
 echo "Upload trivy config scan result to Github"
 

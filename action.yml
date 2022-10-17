@@ -102,6 +102,10 @@ inputs:
     description: 'comma-separated list of vulnerability types (os,library). Required if config checker is enabled.'
     required: false
     default: 'os,library'
+  trivy_timeout:
+    description: 'Trivy timeout duration. Required if config checker is enabled.'
+    required: false
+    default: "5m"
 
 outputs:
   riskscore:
@@ -139,3 +143,4 @@ runs:
     - ' -v ${{ inputs.trivy_repo_ignore-unfixed }}'
     - ' -w ${{ inputs.trivy_repo_severity }}'
     - ' -x ${{ inputs.trivy_repo_vuln }}'
+    - ' -y ${{ inputs.trivy_timeout }}'

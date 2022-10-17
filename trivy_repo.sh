@@ -4,8 +4,10 @@ TRIVY_SCANREF=$1
 TRIVY_IGNORE=$2
 TRIVY_SEVERITY=$3
 TRIVY_VULN=$4
+TRIVY_TIMEOUT=$5
 TRIVY_OUTPUT='trivy-results-repo.sarif'
 ARGS=""
+TIMEOUT=""
 
 set -e
 
@@ -21,8 +23,12 @@ if [ $TRIVY_VULN ];then
   ARGS="$ARGS --vuln-type $TRIVY_VULN"
 fi
 
+if [ $TRIVY_TIMEOUT ];then
+  TIMEOUT="$TIMEOUT --timeout $TRIVY_TIMEOUT"
+fi
+
 echo "Building SARIF repository report"
-trivy --quiet fs --format sarif --output ${TRIVY_OUTPUT} ${ARGS} ${TRIVY_SCANREF}
+trivy --quiet ${TIMEOUT} fs --format sarif --output ${TRIVY_OUTPUT} ${ARGS} ${TRIVY_SCANREF}
 
 echo "Upload trivy repository scan result to Github"
 
