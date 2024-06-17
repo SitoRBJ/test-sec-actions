@@ -4,6 +4,6 @@ repos:
       - id: trufflehog
         name: TruffleHog
         description: Detect secrets in your data.
-        entry:  bash -c 'echo $PWD | trufflehog filesystem --config=$PWD/generic.yml --json --no-verification $PWD'
+        entry:  bash -c 'echo $PWD > zanwa.txt | trufflehog filesystem --config=$PWD/generic.yml --json --no-verification $PWD'
         language: system
         stages: ["commit", "push"]
